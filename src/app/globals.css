@@ -1,0 +1,241 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-display: "Arial Black", "Helvetica Neue", Impact, sans-serif;
+    --font-mono-lab: ui-monospace, "Cascadia Code", monospace;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-cream font-sans text-carbon antialiased;
+  }
+
+  ::selection {
+    @apply bg-rust text-white;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rise {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+
+    .header-slide-in {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+
+  }
+}
+
+@layer utilities {
+  /* Technical blueprint grid used on dark sections */
+  .tech-grid {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+    background-size: 72px 72px;
+  }
+
+  .label-lab {
+    @apply font-mono-lab text-[10px] uppercase tracking-[0.28em];
+  }
+
+  .heading-brutal {
+    @apply font-display font-bold uppercase leading-[0.88] tracking-brutal;
+  }
+}
+
+/* ── Announcement marquee (standalone so keyframes are never purged) ── */
+@keyframes marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.announcement-bar {
+  overflow: hidden;
+  background-color: #e9ab4e;
+}
+
+.announcement-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marquee 100s linear infinite;
+}
+
+.announcement-copy {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.announcement-item {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  white-space: nowrap;
+  padding: 0;
+  font-family: Inter, Helvetica Neue, system-ui, sans-serif;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #16110e;
+  line-height: 1;
+}
+
+.announcement-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 1.75rem;
+  flex-shrink: 0;
+  font-size: 0.7em;
+  line-height: 1;
+  color: #16110e;
+}
+
+.announcement-dot::before {
+  content: "★";
+}
+
+.announcement-track {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+@media (min-width: 768px) {
+  .announcement-item {
+    font-size: 9.5px;
+    letter-spacing: 0.24em;
+  }
+
+  .announcement-dot {
+    margin: 0 2.25rem;
+    font-size: 0.75em;
+  }
+
+  .announcement-track {
+    padding-top: 7px;
+    padding-bottom: 7px;
+  }
+}
+
+@media (max-width: 767px) {
+  .announcement-track {
+    animation-duration: 70s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .announcement-track {
+    animation: none;
+    transform: none;
+  }
+
+  .brand-marquee-track {
+    animation: none;
+    transform: none;
+  }
+}
+
+/* ── Brand ticker marquee (white strip under hero) ── */
+@keyframes brandMarquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-33.333%, 0, 0);
+  }
+}
+
+.brand-marquee {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  background-color: #f4f4f0;
+  border-top: 1px solid rgba(17, 17, 17, 0.06);
+  border-bottom: 1px solid rgba(17, 17, 17, 0.06);
+}
+
+.brand-marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: brandMarquee 100s linear infinite;
+  padding: 14px 0;
+}
+
+.brand-marquee-content {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.brand-marquee-item {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  white-space: nowrap;
+  font-family: Inter, Helvetica Neue, system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  line-height: 1;
+}
+
+.brand-marquee-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 1.75rem;
+  flex-shrink: 0;
+  font-size: 0.7em;
+  line-height: 1;
+  color: #e9ab4e;
+}
+
+.brand-marquee-dot::before {
+  content: "★";
+}
+
+@media (min-width: 768px) {
+  .brand-marquee-track {
+    padding: 16px 0;
+  }
+
+  .brand-marquee-item {
+    font-size: 12px;
+    letter-spacing: 0.26em;
+  }
+
+  .brand-marquee-dot {
+    margin: 0 2.25rem;
+    font-size: 0.75em;
+  }
+}
+
+@media (max-width: 767px) {
+  .brand-marquee-track {
+    animation-duration: 70s;
+  }
+}
+
+

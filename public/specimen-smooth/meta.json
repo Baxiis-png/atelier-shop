@@ -1,0 +1,12 @@
+{
+  "W": 99,
+  "H": 87,
+  "names": [
+    "forward",
+    "look-l",
+    "look-r",
+    "smile",
+    "duck",
+    "forward-b"
+  ]
+}
