@@ -158,7 +158,7 @@ export function HeroStage({ fontClassName }: HeroStageProps) {
     >
       <div className={styles.inner}>
         <div className={styles.copy}>
-          <p className={styles.kicker}>Winter Collection 2026</p>
+          <p className={styles.kicker}>Winter Collection</p>
           <h1 id={titleId} className={styles.title}>
             <span className={styles.line}>Two looks.</span>
             <span className={styles.line}>One single</span>
