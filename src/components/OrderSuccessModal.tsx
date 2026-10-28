@@ -72,10 +72,11 @@ export function OrderSuccessModal() {
           id={titleId}
           className="heading-brutal mt-3 text-3xl text-carbon md:text-4xl"
         >
-          Order done
+          Your order has been sent
         </h2>
         <p className="mt-4 text-sm leading-relaxed text-carbon/60">
-          We will contact you ASAP.
+          Thanks — the lab received your order. We will contact you ASAP to
+          confirm delivery.
         </p>
         <button
           ref={closeRef}

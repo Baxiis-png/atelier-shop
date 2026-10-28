@@ -1,7 +1,12 @@
 import { notFound } from "next/navigation";
 import { ProductGrid } from "@/components/ProductGrid";
 import { ProductDetail } from "@/components/ProductDetail";
-import { getProductByHandle, getRelatedProducts } from "@/lib/products";
+import {
+  getLiveProductByHandle,
+  getLiveRelatedProducts,
+} from "@/lib/inventory";
+
+export const dynamic = "force-dynamic";
 
 type Props = {
   params: Promise<{ handle: string }>;
@@ -9,11 +14,11 @@ type Props = {
 
 export default async function ProductPage({ params }: Props) {
   const { handle } = await params;
-  const product = getProductByHandle(handle);
+  const product = await getLiveProductByHandle(handle);
 
   if (!product) notFound();
 
-  const related = getRelatedProducts(product);
+  const related = await getLiveRelatedProducts(product);
 
   return (
     <div className="mx-auto max-w-[1600px] px-4 py-14 md:px-8 md:py-20">

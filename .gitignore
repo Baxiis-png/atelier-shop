@@ -18,6 +18,7 @@
 # misc
 .DS_Store
 *.pem
+.env
 .env*.local
 
 # debug
@@ -34,3 +35,4 @@ next-env.d.ts
 
 # local mounts / scratch
 /mnt/
+.env*

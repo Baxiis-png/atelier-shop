@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { ProductGrid } from "@/components/ProductGrid";
-import { products } from "@/lib/products";
+import { getLiveProducts } from "@/lib/inventory";
 
-export function CatalogueSection() {
+export async function CatalogueSection() {
+  const products = await getLiveProducts();
   return (
     <section
       id="catalogue"

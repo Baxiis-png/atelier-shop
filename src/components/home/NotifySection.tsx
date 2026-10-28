@@ -23,8 +23,6 @@ const INTERESTS = [
 
 type InterestId = (typeof INTERESTS)[number]["id"];
 
-const STORAGE_KEY = "ape-lab-notify";
-
 export function NotifySection() {
   const [email, setEmail] = useState("");
   const [interests, setInterests] = useState<Record<InterestId, boolean>>({
@@ -32,38 +30,60 @@ export function NotifySection() {
     arrivals: true,
     availability: true,
   });
-  const [status, setStatus] = useState<"idle" | "ok" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "ok" | "error" | "submitting">(
+    "idle",
+  );
+  const [errorMessage, setErrorMessage] = useState("");
 
   const emailValid = email.trim().includes("@") && email.trim().includes(".");
   const anyInterest = INTERESTS.some((i) => interests[i.id]);
-  const canSubmit = emailValid && anyInterest;
+  const canSubmit = emailValid && anyInterest && status !== "submitting";
 
   function toggle(id: InterestId) {
     setInterests((prev) => ({ ...prev, [id]: !prev[id] }));
     setStatus("idle");
+    setErrorMessage("");
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (!canSubmit) {
+    if (!emailValid || !anyInterest || status === "submitting") {
       setStatus("error");
+      setErrorMessage("Enter a valid email and pick at least one topic");
       return;
     }
 
-    const payload = {
-      email: email.trim().toLowerCase(),
-      interests: INTERESTS.filter((i) => interests[i.id]).map((i) => i.id),
-      at: new Date().toISOString(),
-    };
+    setStatus("submitting");
+    setErrorMessage("");
 
     try {
-      const existing = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]") as unknown[];
-      const list = Array.isArray(existing) ? existing : [];
-      localStorage.setItem(STORAGE_KEY, JSON.stringify([...list, payload]));
+      const res = await fetch("/api/notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.trim().toLowerCase(),
+          interests: INTERESTS.filter((i) => interests[i.id]).map((i) => i.id),
+        }),
+      });
+
+      const data = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+      };
+
+      if (!res.ok || !data.ok) {
+        setStatus("error");
+        setErrorMessage(
+          data.error || "Could not save your signup. Try again in a moment.",
+        );
+        return;
+      }
+
       setStatus("ok");
       setEmail("");
     } catch {
       setStatus("error");
+      setErrorMessage("Could not save your signup. Try again in a moment.");
     }
   }
 
@@ -97,6 +117,7 @@ export function NotifySection() {
                 onChange={(e) => {
                   setEmail(e.target.value);
                   setStatus("idle");
+                  setErrorMessage("");
                 }}
                 placeholder="you@gmail.com"
                 autoComplete="email"
@@ -147,7 +168,7 @@ export function NotifySection() {
                     : "cursor-not-allowed border-white/20 text-white/35",
                 )}
               >
-                Notify me
+                {status === "submitting" ? "Saving…" : "Notify me"}
               </button>
               {status === "ok" && (
                 <p className="font-mono-lab text-[9px] uppercase tracking-[0.18em] text-gold">
@@ -156,7 +177,8 @@ export function NotifySection() {
               )}
               {status === "error" && (
                 <p className="font-mono-lab text-[9px] uppercase tracking-[0.18em] text-flame">
-                  Enter a valid email and pick at least one topic
+                  {errorMessage ||
+                    "Enter a valid email and pick at least one topic"}
                 </p>
               )}
             </div>

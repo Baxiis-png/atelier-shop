@@ -11,7 +11,7 @@ const ANNOUNCEMENTS = [
   "IN-HOUSE",
   "CASH ON DELIVERY AVAILABLE",
   "FREE SHIPPING ALL OVER MOROCCO",
-  "EVERY PIECE AUTHENTICATED",
+  "EVERY PIECE VERIFIED",
 ] as const;
 
 const primaryNav = [
@@ -25,7 +25,7 @@ const primaryNav = [
 ];
 
 const secondaryNav = [
-  { label: "AUTHENTICATION", href: "/#detail-study" },
+  { label: "CHECK", href: "/#detail-study" },
   { label: "SHIPPING", href: "/shipping" },
   { label: "CONTACT", href: "/contact" },
 ];

@@ -50,7 +50,7 @@ export const products: Product[] = [
     title: "ABC Camo Side Big Ape Head Tee",
     brand: "A BATHING APE",
     colorway: "White / Blue Camo",
-    price: 39900,
+    price: 29900,
     compareAt: 89900,
     badge: "NEW IN",
     category: "tees",
@@ -62,8 +62,8 @@ export const products: Product[] = [
       "/products/abc-camo-white-2.png",
     ],
     sizes: [
-      { size: "S", inStock: true, quantity: 2 },
-      { size: "M", inStock: true, quantity: 4 },
+      { size: "S", inStock: true, quantity: 1 },
+      { size: "M", inStock: true, quantity: 1 },
       { size: "L", inStock: false, quantity: 0 },
       { size: "XL", inStock: false, quantity: 0 },
     ],
@@ -74,7 +74,7 @@ export const products: Product[] = [
     title: "ABC Camo Side Big Ape Head Tee",
     brand: "A BATHING APE",
     colorway: "Black / Blue Camo",
-    price: 39900,
+    price: 29900,
     compareAt: 89900,
     badge: "NEW IN",
     category: "tees",
@@ -87,9 +87,9 @@ export const products: Product[] = [
       "/products/abc-camo-black-3.png",
     ],
     sizes: [
-      { size: "S", inStock: true, quantity: 1 },
-      { size: "M", inStock: true, quantity: 3 },
-      { size: "L", inStock: false, quantity: 0 },
+      { size: "S", inStock: false, quantity: 0 },
+      { size: "M", inStock: true, quantity: 1 },
+      { size: "L", inStock: true, quantity: 1 },
       { size: "XL", inStock: false, quantity: 0 },
     ],
   },
@@ -99,7 +99,7 @@ export const products: Product[] = [
     title: "Sakura Big Ape Head Tee",
     brand: "A BATHING APE",
     colorway: "White / Pink",
-    price: 39900,
+    price: 29900,
     compareAt: 89900,
     badge: "NEW IN",
     category: "tees",
@@ -112,9 +112,9 @@ export const products: Product[] = [
       "/products/sakura-white-3.png",
     ],
     sizes: [
-      { size: "S", inStock: true, quantity: 3 },
-      { size: "M", inStock: true, quantity: 5 },
-      { size: "L", inStock: false, quantity: 0 },
+      { size: "S", inStock: true, quantity: 1 },
+      { size: "M", inStock: true, quantity: 1 },
+      { size: "L", inStock: true, quantity: 1 },
       { size: "XL", inStock: false, quantity: 0 },
     ],
   },
@@ -124,7 +124,7 @@ export const products: Product[] = [
     title: "Sakura Big Ape Head Tee",
     brand: "A BATHING APE",
     colorway: "Black / Pink",
-    price: 39900,
+    price: 29900,
     compareAt: 89900,
     badge: "NEW IN",
     category: "tees",
@@ -137,8 +137,8 @@ export const products: Product[] = [
       "/products/sakura-black-3.png",
     ],
     sizes: [
-      { size: "S", inStock: true, quantity: 2 },
-      { size: "M", inStock: true, quantity: 2 },
+      { size: "S", inStock: false, quantity: 0 },
+      { size: "M", inStock: true, quantity: 1 },
       { size: "L", inStock: false, quantity: 0 },
       { size: "XL", inStock: false, quantity: 0 },
     ],
@@ -149,7 +149,7 @@ export const products: Product[] = [
     title: "Snakeskin Big Ape Head Tee",
     brand: "A BATHING APE",
     colorway: "White / Python",
-    price: 39900,
+    price: 29900,
     compareAt: 89900,
     badge: "NEW IN",
     category: "tees",
@@ -161,9 +161,9 @@ export const products: Product[] = [
       "/products/snake-white-2.png",
     ],
     sizes: [
-      { size: "S", inStock: true, quantity: 2 },
-      { size: "M", inStock: true, quantity: 3 },
-      { size: "L", inStock: false, quantity: 0 },
+      { size: "S", inStock: true, quantity: 1 },
+      { size: "M", inStock: true, quantity: 2 },
+      { size: "L", inStock: true, quantity: 1 },
       { size: "XL", inStock: false, quantity: 0 },
     ],
   },
@@ -173,7 +173,7 @@ export const products: Product[] = [
     title: "Check Big Ape Head Tee",
     brand: "A BATHING APE",
     colorway: "Black / Grey Check",
-    price: 39900,
+    price: 29900,
     compareAt: 89900,
     badge: "NEW IN",
     category: "tees",
@@ -186,9 +186,9 @@ export const products: Product[] = [
       "/products/check-black-3.png",
     ],
     sizes: [
-      { size: "S", inStock: true, quantity: 4 },
-      { size: "M", inStock: true, quantity: 6 },
-      { size: "L", inStock: false, quantity: 0 },
+      { size: "S", inStock: true, quantity: 1 },
+      { size: "M", inStock: true, quantity: 2 },
+      { size: "L", inStock: true, quantity: 1 },
       { size: "XL", inStock: false, quantity: 0 },
     ],
   },
@@ -198,7 +198,7 @@ export const products: Product[] = [
     title: "Pink Camo Big Ape Head Tee",
     brand: "A BATHING APE",
     colorway: "White / Pink Camo",
-    price: 39900,
+    price: 29900,
     compareAt: 89900,
     badge: "NEW IN",
     category: "tees",
@@ -223,7 +223,7 @@ export const products: Product[] = [
     title: "Fuji Sakura Big Ape Head Tee",
     brand: "A BATHING APE",
     colorway: "White / Blue Camo × Sakura",
-    price: 39900,
+    price: 29900,
     compareAt: 89900,
     badge: "NEW IN",
     category: "tees",
@@ -243,6 +243,33 @@ export const products: Product[] = [
     ],
   },
 ];
+
+export type InventoryMap = Record<string, Record<string, number>>;
+
+export function seedInventory(): InventoryMap {
+  const map: InventoryMap = {};
+  for (const product of products) {
+    map[product.id] = {};
+    for (const size of product.sizes) {
+      map[product.id][size.size] = size.quantity ?? (size.inStock ? 1 : 0);
+    }
+  }
+  return map;
+}
+
+export function applyInventory(
+  product: Product,
+  inventory: InventoryMap,
+): Product {
+  const qtyBySize = inventory[product.id];
+  return {
+    ...product,
+    sizes: product.sizes.map((size) => {
+      const quantity = qtyBySize?.[size.size] ?? size.quantity ?? 0;
+      return { ...size, quantity, inStock: quantity > 0 };
+    }),
+  };
+}
 
 export function getProductByHandle(handle: string): Product | undefined {
   return products.find((p) => p.handle === handle);

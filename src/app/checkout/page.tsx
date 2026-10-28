@@ -10,8 +10,6 @@ import { formatPrice, getProductById } from "@/lib/products";
 import { cn } from "@/lib/utils";
 import { markOrderSuccess } from "@/components/OrderSuccessModal";
 
-const WHATSAPP_NUMBER = "14383552337";
-
 function itemOriginalPrice(productId: string, price: number) {
   return getProductById(productId)?.compareAt ?? price;
 }
@@ -25,6 +23,8 @@ export default function CheckoutPage() {
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
   const originalTotal = items.reduce(
@@ -50,42 +50,65 @@ export default function CheckoutPage() {
     );
   }
 
-  function handleConfirm() {
+  async function handleConfirm() {
     if (
       !city ||
       !name.trim() ||
       !phone.trim() ||
       !email.trim() ||
       !address.trim() ||
-      !acceptTerms
+      !acceptTerms ||
+      submitting
     )
       return;
 
-    const lines = [
-      "APE LAB — New order",
-      `Name: ${name.trim()}`,
-      `Phone: ${phone.trim()}`,
-      `Email: ${email.trim()}`,
-      `City: ${city}`,
-      `Address: ${address.trim()}`,
-      "",
-      "Items:",
-      ...items.map((item) => {
-        const original = itemOriginalPrice(item.productId, item.price);
-        return `• ${item.title} (${item.colorway}) — Size ${item.size} × ${item.quantity} — ${formatPrice(item.price * item.quantity)} (was ${formatPrice(original * item.quantity)})`;
-      }),
-      "",
-      `Original: ${formatPrice(originalTotal)}`,
-      `Subtotal: ${formatPrice(subtotal)}`,
-      `You saved: ${formatPrice(saved)}`,
-      "Shipping: FREE — 48–72h wherever you are",
-    ];
+    setSubmitting(true);
+    setSubmitError("");
 
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join("\n"))}`;
-    window.open(url, "_blank", "noopener,noreferrer");
-    clearCart();
-    markOrderSuccess();
-    router.push("/");
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          city,
+          name: name.trim(),
+          phone: phone.trim(),
+          email: email.trim(),
+          address: address.trim(),
+          items: items.map((item) => ({
+            productId: item.productId,
+            handle: item.handle,
+            title: item.title,
+            brand: item.brand,
+            colorway: item.colorway,
+            size: item.size,
+            price: item.price,
+            quantity: item.quantity,
+          })),
+        }),
+      });
+
+      const data = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        ok?: boolean;
+      };
+
+      if (!res.ok || !data.ok) {
+        setSubmitError(
+          data.error ||
+            "Could not send the order to Shopify. Check your store connection and try again.",
+        );
+        setSubmitting(false);
+        return;
+      }
+
+      clearCart();
+      markOrderSuccess();
+      router.push("/");
+    } catch {
+      setSubmitError("Network error — please try again.");
+      setSubmitting(false);
+    }
   }
 
   const canSubmit =
@@ -94,7 +117,8 @@ export default function CheckoutPage() {
     phone.trim().length > 5 &&
     email.trim().includes("@") &&
     address.trim().length > 3 &&
-    acceptTerms;
+    acceptTerms &&
+    !submitting;
 
   return (
     <div className="mx-auto max-w-[1600px] px-4 py-16 md:px-8 md:py-20">
@@ -102,7 +126,7 @@ export default function CheckoutPage() {
       <h1 className="heading-brutal mt-3 text-4xl md:text-6xl">Confirm order</h1>
       <p className="mt-4 max-w-xl text-sm leading-relaxed text-carbon/55">
         Free shipping wherever you are — 48–72 hours. Select your city, fill your
-        details, then send the order to the lab on WhatsApp.
+        details, then confirm — your order is sent to the lab.
       </p>
 
       <div className="mt-12 grid gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
@@ -306,6 +330,10 @@ export default function CheckoutPage() {
             Shipping free — 48–72h
           </p>
 
+          {submitError ? (
+            <p className="mt-6 text-xs leading-relaxed text-rust">{submitError}</p>
+          ) : null}
+
           <button
             type="button"
             disabled={!canSubmit}
@@ -317,7 +345,11 @@ export default function CheckoutPage() {
                 : "cursor-not-allowed bg-carbon/15 text-carbon/40",
             )}
           >
-            {canSubmit ? "Confirm & send order" : "Complete details to send"}
+            {submitting
+              ? "Sending order…"
+              : canSubmit
+                ? "Confirm & send order"
+                : "Complete details to send"}
           </button>
 
           <button

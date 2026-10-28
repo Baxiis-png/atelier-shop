@@ -133,24 +133,41 @@ export function ProductDetail({ product }: { product: Product }) {
             </button>
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
-            {product.sizes.map((s) => (
-              <button
-                key={s.size}
-                type="button"
-                disabled={!s.inStock}
-                onClick={() => setSelectedSize(s.size)}
-                className={cn(
-                  "min-w-[3.25rem] border px-4 py-3 font-mono-lab text-xs uppercase tracking-[0.1em] transition-colors",
-                  selectedSize === s.size
-                    ? "border-carbon bg-carbon text-cream"
-                    : "border-carbon/20 text-carbon hover:border-carbon",
-                  !s.inStock &&
-                    "cursor-not-allowed border-carbon/10 text-carbon/25 line-through hover:border-carbon/10",
-                )}
-              >
-                {s.size}
-              </button>
-            ))}
+            {product.sizes.map((s) => {
+              const left = s.inStock ? (s.quantity ?? 1) : 0;
+              return (
+                <button
+                  key={s.size}
+                  type="button"
+                  disabled={!s.inStock}
+                  onClick={() => setSelectedSize(s.size)}
+                  className={cn(
+                    "flex min-w-[3.75rem] flex-col items-center gap-0.5 border px-4 py-2.5 font-mono-lab uppercase transition-colors",
+                    selectedSize === s.size
+                      ? "border-carbon bg-carbon text-cream"
+                      : "border-carbon/20 text-carbon hover:border-carbon",
+                    !s.inStock &&
+                      "cursor-not-allowed border-carbon/10 text-carbon/25 line-through hover:border-carbon/10",
+                  )}
+                >
+                  <span className="text-xs tracking-[0.1em]">{s.size}</span>
+                  <span
+                    className={cn(
+                      "text-[8px] tracking-[0.12em]",
+                      !s.inStock
+                        ? "normal-case no-underline"
+                        : selectedSize === s.size
+                          ? "text-cream/75"
+                          : left <= 1
+                            ? "text-rust"
+                            : "text-carbon/45",
+                    )}
+                  >
+                    {s.inStock ? `${left} left` : "0 left"}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
 

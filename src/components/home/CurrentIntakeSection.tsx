@@ -31,9 +31,9 @@ export function CurrentIntakeSection() {
             </h2>
 
             <p className="mt-8 max-w-md text-sm leading-relaxed text-white/55 md:text-[15px]">
-              Two colourways cleared the bench this week. Original camo hang tags,
-              woven hem labels, and a seven-point authentication log attached to
-              every order.
+              Two colourways cleared the bench this week. Verified camo hang tags,
+              woven hem labels, and a seven-point check log attached to every
+              order.
             </p>
 
             <div className="mt-10 flex flex-wrap gap-3">

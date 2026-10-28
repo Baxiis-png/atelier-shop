@@ -79,6 +79,7 @@ export function ProductCard({
                 )}
               >
                 {s.size}
+                {s.inStock ? ` ${s.quantity ?? 1}` : ""}
               </span>
             ))}
           </div>

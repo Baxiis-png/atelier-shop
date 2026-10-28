@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useContactModal } from "@/context/contact-modal-context";
 
 const PHONE = "+1 438 355 2337";
-const EMAIL = "contact@ape-lab.com";
+const EMAIL = "ape.lab@outlook.com";
 
 export default function ContactPage() {
   const { openContact } = useContactModal();
